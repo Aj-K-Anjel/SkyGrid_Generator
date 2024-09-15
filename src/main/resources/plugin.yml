@@ -1,0 +1,7 @@
+name: skygrid_gen
+version: '1.0-SNAPSHOT'
+main: me.skygrid_gen.Skygrid_gen
+api-version: '1.21'
+prefix: KINGDOM
+load: STARTUP
+authors: [ DryByte ]
