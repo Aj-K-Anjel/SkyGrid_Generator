@@ -7,22 +7,19 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 public class Generator extends ChunkGenerator {
 
-    private final HashMap<String, Integer> odds;
-
-    public Generator() {
-        this.odds = new HashMap<>();
-
-        this.odds.put("GRASS_BLOCK", 90);
-        this.odds.put("STONE", 80);
-        this.odds.put("COBBLESTONE", 60);
-        this.odds.put("ANDESITE", 50);
-    }
+    private final Block[] odds = new Block[] {
+            new Block("GRASS_BLOCK", 50, 95),
+            new Block("STONE", 255, 80),
+            new Block("COBBLESTONE", 255, 60),
+            new Block("ANDESITE", 255, 50),
+    };
 
     @Override
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
@@ -39,10 +36,11 @@ public class Generator extends ChunkGenerator {
                     Material mat = Material.values()[random.nextInt(len)];
 
                     int odd = random.nextInt(100);
-                    String[] blocks = this.odds.entrySet().stream().filter(a->odd<=a.getValue()).map(e->e.getKey()).toArray(String[]::new);
+                    int _y = y;
+                    Block[] blocks = Arrays.stream(this.odds).filter(a->odd<=a.spawn_chance && _y <= a.layer).toArray(Block[]::new);
 
                     if (blocks.length > 0) {
-                        String chosen = blocks[random.nextInt(blocks.length)];
+                        String chosen = blocks[random.nextInt(blocks.length)].name;
                         mat = Material.valueOf(chosen);
                     } else {
                         while (!mat.isBlock() || mat.isAir() || !mat.isCollidable()) {
