@@ -1,11 +1,14 @@
 package me.skygrid_gen;
 
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 public class Generator extends ChunkGenerator {
@@ -19,6 +22,11 @@ public class Generator extends ChunkGenerator {
         this.odds.put("STONE", 80);
         this.odds.put("COBBLESTONE", 60);
         this.odds.put("ANDESITE", 50);
+    }
+
+    @Override
+    public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
+        return List.of(new SpawnersPopulator());
     }
 
     @Override
@@ -63,7 +71,7 @@ public class Generator extends ChunkGenerator {
 
     @Override
     public boolean shouldGenerateMobs() {
-        return false;
+        return true;
     }
 
     @Override
